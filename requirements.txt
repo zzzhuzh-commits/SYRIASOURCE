@@ -9,3 +9,5 @@ yt-dlp
 pytgcalls
 youtube-search-python
 Pillow
+pytgcalls
+yt-dlp
