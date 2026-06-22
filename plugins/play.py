@@ -3,7 +3,7 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton
 )
-
+from core.youtube import search_youtube
 def register(app):
 
     @app.on_message(filters.regex("^تشغيل (.+)"))
