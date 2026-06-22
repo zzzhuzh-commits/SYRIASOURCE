@@ -3,13 +3,22 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton
 )
+
 from core.youtube import search_youtube
+
 def register(app):
 
     @app.on_message(filters.regex("^تشغيل (.+)"))
     async def play(_, message):
 
         query = message.text.split(" ", 1)[1]
+
+        result = search_youtube(query)
+
+        if not result:
+            return await message.reply(
+                "❌ لم يتم العثور على نتائج"
+            )
 
         buttons = InlineKeyboardMarkup(
             [
@@ -37,18 +46,18 @@ def register(app):
         )
 
         await message.reply_photo(
-            photo="https://picsum.photos/800/450",
+            photo=result["thumbnail"],
             caption=f"""
 🎵 جاري التشغيل
 
-🎧 الأغنية:
-{query}
+🏷 الاسم:
+{result['title']}
+
+⏱ المدة:
+{result['duration']}
 
 👤 بواسطة:
 {message.from_user.mention}
-
-━━━━━━━━━━
-⏳ المدة: غير معروفة
             """,
             reply_markup=buttons
         )
@@ -58,8 +67,24 @@ def register(app):
 
         query = message.text.split(" ", 1)[1]
 
-        await message.reply(
-            f"🎬 جاري تشغيل الفيديو:\n\n{query}"
+        result = search_youtube(query)
+
+        if not result:
+            return await message.reply(
+                "❌ لم يتم العثور على نتائج"
+            )
+
+        await message.reply_photo(
+            photo=result["thumbnail"],
+            caption=f"""
+🎬 الفيديو
+
+🏷 الاسم:
+{result['title']}
+
+⏱ المدة:
+{result['duration']}
+            """
         )
 
     @app.on_message(filters.regex("^قائمتي$"))
