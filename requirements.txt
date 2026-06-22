@@ -6,3 +6,8 @@ dnspython
 aiohttp
 requests
 yt-dlp
+
+pytgcalls
+ffmpeg-python
+youtube-search-python
+apscheduler
