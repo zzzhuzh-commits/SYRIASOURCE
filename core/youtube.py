@@ -1,26 +1,16 @@
-from yt_dlp import YoutubeDL
+from youtubesearchpython import VideosSearch
 
-async def search_youtube(query: str):
-    ydl_opts = {
-        "quiet": True,
-        "skip_download": True,
-        "noplaylist": True
-    }
+def search_youtube(query):
+    results = VideosSearch(query, limit=1).result()
 
-    with YoutubeDL(ydl_opts) as ydl:
-        data = ydl.extract_info(
-            f"ytsearch:{query}",
-            download=False
-        )
-
-    if not data["entries"]:
+    if not results["result"]:
         return None
 
-    video = data["entries"][0]
+    video = results["result"][0]
 
     return {
-        "title": video.get("title"),
-        "duration": video.get("duration"),
-        "thumbnail": video.get("thumbnail"),
-        "url": video.get("webpage_url")
+        "title": video["title"],
+        "duration": video["duration"],
+        "thumbnail": video["thumbnails"][0]["url"],
+        "url": video["link"]
     }
