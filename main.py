@@ -3,7 +3,7 @@ from pyrogram import Client
 from config import *
 
 app = Client(
-    "HMD-ALSOURY-BEST",
+    "SYRIA-MUSIC",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN
@@ -15,6 +15,9 @@ start_register(app)
 from plugins.play import register as play_register
 play_register(app)
 
-print("HMD-ALSOURY-BEST Started")
+from plugins.admins import register as admin_register
+admin_register(app)
+
+print("SYRIA MUSIC STARTED")
 
 app.run()
