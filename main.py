@@ -1,5 +1,4 @@
 from pyrogram import Client
-
 from config import *
 
 app = Client(
@@ -17,6 +16,9 @@ play_register(app)
 
 from plugins.admins import register as admin_register
 admin_register(app)
+
+from plugins.callbacks import register as callbacks_register
+callbacks_register(app)
 
 print("SYRIA MUSIC STARTED")
 
