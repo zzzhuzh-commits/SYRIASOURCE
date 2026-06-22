@@ -1,84 +1,43 @@
 from pyrogram import filters
-from pyrogram.types import (
-    InlineKeyboardMarkup,
-    InlineKeyboardButton
-)
-
-from core.youtube import search_youtube
 
 def register(app):
 
-    @app.on_message(filters.text)
-    async def play_handler(client, message):
+    @app.on_message(filters.regex("^تشغيل (.+)"))
+    async def play(_, message):
 
-        if not message.text:
-            return
+        query = message.text.split(
+            " ", 1
+        )[1]
 
-        if not message.text.startswith("تشغيل "):
-            return
-
-        query = message.text.replace(
-            "تشغيل ",
-            "",
-            1
+        await message.reply(
+            f"🎵 جاري البحث عن:\n\n{query}"
         )
 
-        msg = await message.reply_text(
-            "🔎 جاري البحث..."
+    @app.on_message(filters.regex("^فيديو (.+)"))
+    async def vplay(_, message):
+
+        query = message.text.split(
+            " ", 1
+        )[1]
+
+        await message.reply(
+            f"🎬 جاري البحث عن الفيديو:\n\n{query}"
         )
 
-        result = await search_youtube(query)
+    @app.on_message(filters.regex("^قائمتي$"))
+    async def mylist(_, message):
 
-        if not result:
-            return await msg.edit_text(
-                "❌ لم يتم العثور على نتائج."
-            )
-
-        duration = result["duration"]
-
-        minutes = duration // 60
-        seconds = duration % 60
-
-        buttons = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        "⏭ تخطي",
-                        callback_data="skip"
-                    ),
-                    InlineKeyboardButton(
-                        "⏸ ايقاف",
-                        callback_data="pause"
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        "▶️ استئناف",
-                        callback_data="resume"
-                    ),
-                    InlineKeyboardButton(
-                        "❌ اغلاق",
-                        callback_data="close"
-                    )
-                ]
-            ]
+        await message.reply(
+            "📜 قائمة التشغيل فارغة"
         )
 
-        await message.reply_photo(
-            photo=result["thumbnail"],
-            caption=f"""
-🎵 جاري التشغيل ...
+    @app.on_message(filters.regex("^اضف_للقائمة (.+)"))
+    async def add_playlist(_, message):
 
-🎧 الأغنية:
-{result['title']}
+        song = message.text.split(
+            " ", 1
+        )[1]
 
-⏱ المدة:
-{minutes}:{seconds:02}
-
-👤 بواسطة:
-{message.from_user.mention}
-            """,
-            reply_markup=buttons
+        await message.reply(
+            f"✅ تمت إضافة:\n{song}"
         )
-
-        await msg.delete()
