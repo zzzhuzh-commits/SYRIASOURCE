@@ -1,13 +1,11 @@
 pyrogram
 tgcrypto
-pytgcalls
-yt-dlp
-ffmpeg-python
 python-dotenv
 motor
 dnspython
 aiohttp
 requests
-py-tgcalls
-ntgcalls
-yt-search-python
+yt-dlp
+pytgcalls
+youtube-search-python
+Pillow
