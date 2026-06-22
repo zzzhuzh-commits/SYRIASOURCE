@@ -1,27 +1,32 @@
 from pyrogram import filters
-from pyrogram.types import (
-    InlineKeyboardMarkup,
-    InlineKeyboardButton
-)
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def register(app):
 
     @app.on_message(filters.command("start"))
-    async def start_cmd(client, message):
+    async def start(_, message):
 
-        buttons = InlineKeyboardMarkup(
+        text = f"""
+🎵 مرحباً بك في بوت الميوزك
+
+• تشغيل : تشغيل أغنية
+• فيديو : تشغيل فيديو
+• قائمتي : عرض قائمتك
+• اضف_للقائمة : حفظ أغنية
+
+━━━━━━━━━━
+👑 المطور يتحكم بالأوامر الإدارية
+"""
+
+        keyboard = InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
                         "➕ أضف البوت لمجموعتك",
-                        url="https://t.me/YOUR_BOT_USERNAME?startgroup=true"
+                        url="https://t.me/YourBot?startgroup=true"
                     )
                 ],
                 [
-                    InlineKeyboardButton(
-                        "📢 القناة",
-                        url="https://t.me/QQHMDQ"
-                    ),
                     InlineKeyboardButton(
                         "👨‍💻 المطور",
                         url="https://t.me/Q_0_R"
@@ -31,14 +36,7 @@ def register(app):
         )
 
         await message.reply_photo(
-            photo="https://picsum.photos/800/400",
-            caption="""
-🎵 مرحباً بك في سورس سوريا ميوزك
-
-• تشغيل الأغاني
-• تشغيل الفيديو
-• قوائم تشغيل
-• تحكم كامل بالمحادثة الصوتية
-            """,
-            reply_markup=buttons
+            photo="https://picsum.photos/800/500",
+            caption=text,
+            reply_markup=keyboard
         )
