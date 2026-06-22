@@ -4,7 +4,6 @@ from pyrogram.types import (
     InlineKeyboardButton
 )
 
-from core.youtube import search_youtube
 print("PLAY PLUGIN LOADED")
 def register(app):
 
