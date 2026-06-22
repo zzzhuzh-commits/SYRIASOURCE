@@ -1,5 +1,8 @@
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton
+)
 
 def register(app):
 
@@ -10,31 +13,32 @@ def register(app):
             [
                 [
                     InlineKeyboardButton(
-                        "➕ اضف البوت للمجموعة",
-                        url=f"https://t.me/{(await client.get_me()).username}?startgroup=true"
+                        "➕ أضف البوت لمجموعتك",
+                        url="https://t.me/YOUR_BOT_USERNAME?startgroup=true"
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        "🎵 الاوامر",
-                        callback_data="help"
+                        "📢 القناة",
+                        url="https://t.me/QQHMDQ"
+                    ),
+                    InlineKeyboardButton(
+                        "👨‍💻 المطور",
+                        url="https://t.me/Q_0_R"
                     )
                 ]
             ]
         )
 
-        await message.reply_text(
-            """
-🎵 اهلاً بك في HMD-ALSOURY-BEST
+        await message.reply_photo(
+            photo="https://picsum.photos/800/400",
+            caption="""
+🎵 مرحباً بك في سورس سوريا ميوزك
 
-بوت ميوزك عربي متكامل
-
-• تشغيل
-• فيديو
+• تشغيل الأغاني
+• تشغيل الفيديو
 • قوائم تشغيل
-• اذاعات
-
-اضغط الازرار بالاسفل
-""",
+• تحكم كامل بالمحادثة الصوتية
+            """,
             reply_markup=buttons
         )
