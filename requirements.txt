@@ -1,13 +1,10 @@
 pyrogram
 tgcrypto
+pytgcalls
+yt-dlp
+ffmpeg-python
 python-dotenv
 motor
 dnspython
 aiohttp
 requests
-yt-dlp
-
-pytgcalls
-ffmpeg-python
-youtube-search-python
-apscheduler
