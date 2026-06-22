@@ -5,19 +5,13 @@ from pyrogram.types import (
 )
 
 print("PLAY PLUGIN LOADED")
+
 def register(app):
 
     @app.on_message(filters.regex("^تشغيل (.+)"))
     async def play(_, message):
 
         query = message.text.split(" ", 1)[1]
-
-        result = search_youtube(query)
-
-        if not result:
-            return await message.reply(
-                "❌ لم يتم العثور على نتائج"
-            )
 
         buttons = InlineKeyboardMarkup(
             [
@@ -44,20 +38,8 @@ def register(app):
             ]
         )
 
-        await message.reply_photo(
-            photo=result["thumbnail"],
-            caption=f"""
-🎵 جاري التشغيل
-
-🏷 الاسم:
-{result['title']}
-
-⏱ المدة:
-{result['duration']}
-
-👤 بواسطة:
-{message.from_user.mention}
-            """,
+        await message.reply(
+            f"🎵 تم استلام الطلب:\n\n{query}",
             reply_markup=buttons
         )
 
@@ -66,24 +48,8 @@ def register(app):
 
         query = message.text.split(" ", 1)[1]
 
-        result = search_youtube(query)
-
-        if not result:
-            return await message.reply(
-                "❌ لم يتم العثور على نتائج"
-            )
-
-        await message.reply_photo(
-            photo=result["thumbnail"],
-            caption=f"""
-🎬 الفيديو
-
-🏷 الاسم:
-{result['title']}
-
-⏱ المدة:
-{result['duration']}
-            """
+        await message.reply(
+            f"🎬 تم استلام طلب الفيديو:\n\n{query}"
         )
 
     @app.on_message(filters.regex("^قائمتي$"))
