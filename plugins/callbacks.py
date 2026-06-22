@@ -39,3 +39,15 @@ def register(app):
 
         await query.message.reply("▶️ تم الاستئناف")
         await query.answer()
+
+    @app.on_callback_query(filters.regex("^close$"))
+    async def close_cb(_, query: CallbackQuery):
+
+        if query.from_user.id != OWNER_ID:
+            return await query.answer(
+                "هذا الزر للمطور فقط",
+                show_alert=True
+            )
+
+        await query.message.delete()
+        await query.answer()
