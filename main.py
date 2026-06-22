@@ -10,8 +10,10 @@ app = Client(
 )
 
 from plugins.start import register as start_register
-
 start_register(app)
+
+from plugins.play import register as play_register
+play_register(app)
 
 print("HMD-ALSOURY-BEST Started")
 
