@@ -5,7 +5,7 @@ from pyrogram.types import (
 )
 
 from core.youtube import search_youtube
-
+print("PLAY PLUGIN LOADED")
 def register(app):
 
     @app.on_message(filters.regex("^تشغيل (.+)"))
