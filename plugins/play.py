@@ -4,6 +4,8 @@ from pyrogram.types import (
     InlineKeyboardButton
 )
 
+from core.youtube import search_youtube
+
 def register(app):
 
     @app.on_message(filters.text)
@@ -12,49 +14,71 @@ def register(app):
         if not message.text:
             return
 
-        if message.text.startswith("تشغيل "):
+        if not message.text.startswith("تشغيل "):
+            return
 
-            song = message.text.replace(
-                "تشغيل ",
-                "",
-                1
+        query = message.text.replace(
+            "تشغيل ",
+            "",
+            1
+        )
+
+        msg = await message.reply_text(
+            "🔎 جاري البحث..."
+        )
+
+        result = await search_youtube(query)
+
+        if not result:
+            return await msg.edit_text(
+                "❌ لم يتم العثور على نتائج."
             )
 
-            buttons = InlineKeyboardMarkup(
+        duration = result["duration"]
+
+        minutes = duration // 60
+        seconds = duration % 60
+
+        buttons = InlineKeyboardMarkup(
+            [
                 [
-                    [
-                        InlineKeyboardButton(
-                            "⏭ تخطي",
-                            callback_data="skip"
-                        ),
-                        InlineKeyboardButton(
-                            "⏸ ايقاف",
-                            callback_data="pause"
-                        )
-                    ],
-                    [
-                        InlineKeyboardButton(
-                            "▶️ استئناف",
-                            callback_data="resume"
-                        ),
-                        InlineKeyboardButton(
-                            "❌ اغلاق",
-                            callback_data="close"
-                        )
-                    ]
+                    InlineKeyboardButton(
+                        "⏭ تخطي",
+                        callback_data="skip"
+                    ),
+                    InlineKeyboardButton(
+                        "⏸ ايقاف",
+                        callback_data="pause"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "▶️ استئناف",
+                        callback_data="resume"
+                    ),
+                    InlineKeyboardButton(
+                        "❌ اغلاق",
+                        callback_data="close"
+                    )
                 ]
-            )
+            ]
+        )
 
-            await message.reply_photo(
-                photo="https://picsum.photos/700/400",
-                caption=f"""
-🎵 جاري التشغيل...
+        await message.reply_photo(
+            photo=result["thumbnail"],
+            caption=f"""
+🎵 جاري التشغيل ...
 
 🎧 الأغنية:
-{song}
+{result['title']}
+
+⏱ المدة:
+{minutes}:{seconds:02}
 
 👤 بواسطة:
 {message.from_user.mention}
-                """,
-                reply_markup=buttons
-            )
+            """,
+            reply_markup=buttons
+        )
+
+        await msg.delete()
